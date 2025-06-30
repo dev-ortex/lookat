@@ -19,11 +19,12 @@ Uma include para **Pawn** que permite detectar se um jogador está olhando para 
 ## ⚙️ Funções Nativas
 
 ```pawn
-native GetPlayerViewDirection(playerid, Float:scale, &Float:x, &Float:y, &Float:z);
-
-native IsFloatBetween(Float:value, Float:center, Float:range = 2.0);
-native IsPointLookingAtPoint(playerid, Float:x, Float:y, Float:z);
-native IsPlayerLookingAt(playerid, E_LOOKAT_TYPE:type, targetid);
+native bool:IsPointLookingAtPoint(playerid, Float:x, Float:y, Float:z, Float:range = MAX_RANGE_DISTANCE);
+native bool:IsPlayerLookingAtPlayer(playerid, targetid, Float:range = MAX_RANGE_DISTANCE);
+native bool:IsPlayerLookingAtVehicle(playerid, targetid, Float:range = MAX_RANGE_DISTANCE);
+native bool:IsPlayerLookingAtObject(playerid, targetid, Float:range = MAX_RANGE_DISTANCE);
+native bool:IsPlayerLookingAtActor(playerid, targetid, Float:range = MAX_RANGE_DISTANCE);
+native bool:IsPlayerLookingAt(playerid, E_LOOKAT_TYPE:type, targetid, Float:range = MAX_RANGE_DISTANCE);
 ```
 
 > \[!IMPORTANT]
@@ -47,20 +48,23 @@ native IsPlayerLookingAt(playerid, E_LOOKAT_TYPE:type, targetid);
 ## 🧪 Exemplo de Uso
 
 ```pawn
-CMD:interagir(playerid)
+CMD:interact(playerid)
 {
     for (new i = 0; i < MAX_PLAYERS; i++) {
+		if(!IsPlayerConnected(i)) continue;
 
-        if (i != playerid && IsPlayerLookingAt(playerid, E_LOOKAT_PLAYER, i)) {
-		SendClientMessage(playerid, -1, "Voce esta olhando para um jogador!");
+        if (i != playerid && IsPlayerLookingAtPlayer(playerid, i)) {
+            SendClientMessage(playerid, -1, "Voce esta olhando para um jogador!");
         } 
-        else if (IsPlayerLookingAt(playerid, E_LOOKAT_VEHICLE, i)) {
-		SendClientMessage(playerid, -1, "Voce esta olhando para o seu veiculo!");
-        }
-	else if (IsPlayerLookingAt(playerid, E_LOOKAT_OBJECT, i)) {
-		SendClientMessage(playerid, -1, "Voce esta olhando para um objeto!");
-	}
     }
+
+	for (new i = 0; i < MAX_VEHICLES; i++) {
+		if(!IsValidVehicle(i)) continue;
+
+		if (IsPlayerLookingAtVehicle(playerid, i)) {
+			SendClientMessage(playerid, -1, "Voce esta olhando para o seu veiculo!");
+		}
+	}
     return 1;
 }
 
