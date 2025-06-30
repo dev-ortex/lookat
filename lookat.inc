@@ -26,13 +26,6 @@
 static const 		Float:MAX_RANGE_DISTANCE = 1.0;
 static const 		Float:MAX_SCALE_DISTANCE = 5.0;
 
-enum E_LOOKAT {
-	E_LOOKAT_PLAYER,
-	E_LOOKAT_VEHICLE,
-	E_LOOKAT_OBJECT,
-	E_LOOKAT_ACTOR
-};
-
 enum E_LOOKAT_TYPE
 {
     E_LOOKAT_PLAYER,
